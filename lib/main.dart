@@ -1,0 +1,79 @@
+import 'package:dorona/Screens/Login/login.dart';
+import 'package:dorona/colors1.dart';
+import 'package:dorona/providers/userProvider.dart';
+import 'package:dorona/styles.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:splashscreen/splashscreen.dart';
+
+import 'Screens/Home/home.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: UserProvider(),
+        )
+      ],
+      child: MaterialApp(
+        home: SplashScreen(
+          seconds: 5,
+          backgroundColor: Colors.white,
+          navigateAfterSeconds: OnBoarding(),
+          title: Text(
+            "Dorona",
+            style: splashtitle,
+          ),
+          loadingText: Text(
+            "Door Raho Na!",
+            style: splashtitle,
+          ),
+          loaderColor: Colors.red,
+          image: Image.asset('assets/images/coronavirus.png'),
+          photoSize: 120,
+        ),
+      ),
+    );
+  }
+}
+
+class OnBoarding extends StatefulWidget {
+  @override
+  _OnBoardingState createState() => _OnBoardingState();
+}
+
+class _OnBoardingState extends State<OnBoarding> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    
+  }
+  @override
+  Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    userProvider.registerUserChange();
+    return userProvider.issignedIn ? Home() : Login();
+  }
+}

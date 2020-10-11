@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "559916609723",
+    "firebase_url": "https://dorona-ee417.firebaseio.com",
+    "project_id": "dorona-ee417",
+    "storage_bucket": "dorona-ee417.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:559916609723:android:48ce64deff2ce711e8399e",
+        "android_client_info": {
+          "package_name": "com.example.dorona"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "559916609723-s316a1s7lold36ropmtr3ig553g872lt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dorona",
+            "certificate_hash": "11e677d4e09fc98a24501b51cc10e8d84f71515b"
+          }
+        },
+        {
+          "client_id": "559916609723-evbdnna41m85bf7d1unc3k7etj4gmi88.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVLz7-XOjTA-D-OfUuECvreIqjq4demUw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "559916609723-evbdnna41m85bf7d1unc3k7etj4gmi88.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
