@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "559916609723-95kai1jf8cus9hu222phguhgqiamqci2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dorona",
+            "certificate_hash": "b594debc34b5f057bafde280a5d371620beafe4f"
+          }
+        },
+        {
           "client_id": "559916609723-s316a1s7lold36ropmtr3ig553g872lt.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
