@@ -1,13 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dorona/Screens/Drawer/drawer.dart';
 import 'package:dorona/Screens/Profile/profilePage.dart';
 import 'package:dorona/colors1.dart';
 import 'package:dorona/my_custom_icons.dart';
+import 'package:dorona/providers/userProvider.dart';
 import 'package:dorona/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
+  String userId;
+  Home(this.userId);
   @override
   _HomeState createState() => _HomeState();
 }
@@ -15,7 +21,16 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    MethodChannel channel = MethodChannel("Location");
+    channel.invokeMethod('startLocation', {'userId': widget.userId});
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       drawer: CustomDrawer(),
@@ -50,7 +65,9 @@ class _HomeState extends State<Home> {
           )
         ],
       ),
-      body: Column(),
+      body: Column(
+        children: [],
+      ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(color: Colors.white, boxShadow: [
           BoxShadow(blurRadius: 20, color: Colors.black.withOpacity(.1))

@@ -28,3 +28,7 @@ TextStyle simpleTextDrawer=GoogleFonts.aleo(
   fontSize: 20,
   color: blueColor,
 );
+TextStyle subtitleTextFaded=GoogleFonts.aleo(
+  fontSize: 20,
+  color: Color.fromRGBO(128,131,224,0.5),
+);

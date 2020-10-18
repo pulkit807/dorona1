@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dorona/Screens/Login/login.dart';
 import 'package:dorona/colors1.dart';
 import 'package:dorona/providers/userProvider.dart';
@@ -5,6 +6,7 @@ import 'package:dorona/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:splashscreen/splashscreen.dart';
 
@@ -57,7 +59,6 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
 class OnBoarding extends StatefulWidget {
   @override
   _OnBoardingState createState() => _OnBoardingState();
@@ -68,12 +69,13 @@ class _OnBoardingState extends State<OnBoarding> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    
   }
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
-    userProvider.registerUserChange();
-    return userProvider.issignedIn ? Home() : Login();
+    if(!userProvider.issignedIn){
+      userProvider.registerUserChange();
+    }
+    return userProvider.issignedIn ? Home(userProvider.user.uid) : Login();
   }
 }
