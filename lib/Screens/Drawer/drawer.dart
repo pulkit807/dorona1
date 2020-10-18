@@ -3,6 +3,7 @@ import 'package:dorona/my_custom_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dorona/styles.dart';
+import 'package:flutter/cupertino.dart';
 
 class CustomDrawer extends StatefulWidget {
   @override
@@ -15,11 +16,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
     return Drawer(
       child: Container(
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-            gradient: LinearGradient(colors: [
-          Colors.white,
-          Colors.white,
-        ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
         child: SingleChildScrollView(
           child: Column(
             children: [

@@ -11,6 +11,8 @@ import 'package:flutter/services.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
 
+import 'covid_updates.dart';
+
 class Home extends StatefulWidget {
   String userId;
   Home(this.userId);
@@ -19,7 +21,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
   @override
   void initState() {
     // TODO: implement initState
@@ -65,9 +67,7 @@ class _HomeState extends State<Home> {
           )
         ],
       ),
-      body: Column(
-        children: [],
-      ),
+      body: _selectedIndex==1?CovidUpdates():Column(),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(color: Colors.white, boxShadow: [
           BoxShadow(blurRadius: 20, color: Colors.black.withOpacity(.1))
