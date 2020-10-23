@@ -130,11 +130,14 @@ class _ProfileBodyState extends State<ProfileBody> {
     );
   }
 
-  Future<Position> getLocation() async {
+  void getLocation() async {
     currentPosition = await getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.best,
+      desiredAccuracy: LocationAccuracy.lowest,
       forceAndroidLocationManager: true,
+    
     );
+    // Location location=Location();
+    // currentPosition=await location.getLocation();
     setState(() {
       isCurrentLocationLoading = false;
     });

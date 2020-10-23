@@ -1,11 +1,16 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:dorona/Screens/QrScanner/showQr.dart';
 import 'package:dorona/colors1.dart';
 import 'package:dorona/my_custom_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dorona/styles.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CustomDrawer extends StatefulWidget {
+  BuildContext homecontext;
+  CustomDrawer(this.homecontext);
   @override
   _CustomDrawerState createState() => _CustomDrawerState();
 }
@@ -30,6 +35,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 color: iconColor,
               ),
               ListTile(
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ShowQr(),
+                  ));
+                },
                 leading: Icon(
                   MyCustomIcons.qrcode,
                   size: 30,
@@ -41,13 +52,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 ),
               ),
               ListTile(
+                onTap: () async {
+                  if (await canLaunch("tel:1075")) {
+                    Navigator.of(context).pop();
+                    await launch("tel:1075");
+                  }
+                },
                 leading: Icon(
                   MyCustomIcons.phone,
                   size: 30,
                   color: iconColor,
                 ),
                 title: Text(
-                  "Call Helpline",
+                  "Call Helpline(1075)",
                   style: simpleTextDrawer,
                 ),
               ),
@@ -72,9 +89,36 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   "Sign out",
                   style: simpleTextDrawer,
                 ),
-                onTap: (){
-                  FirebaseAuth auth=FirebaseAuth.instance;
-                  auth.signOut();
+                onTap: () {
+                  Navigator.of(context).pop();
+                  AwesomeDialog(
+                    context: widget.homecontext,
+                    dialogType: DialogType.INFO,
+                    title: "Do you really want to signout?",
+                    desc: "",
+                    btnOk: RaisedButton(
+                      color: greenColor,
+                      onPressed: () {
+                        Navigator.of(widget.homecontext).pop();
+                        FirebaseAuth auth = FirebaseAuth.instance;
+                        auth.signOut();
+                      },
+                      child: Text(
+                        "Yes",
+                        style: buttonText,
+                      ),
+                    ),
+                    btnCancel: RaisedButton(
+                      color: redColor,
+                      onPressed: () {
+                        Navigator.of(widget.homecontext).pop();
+                      },
+                      child: Text(
+                        "Cancel",
+                        style: buttonText,
+                      ),
+                    ),
+                  )..show();
                 },
               ),
               Divider(

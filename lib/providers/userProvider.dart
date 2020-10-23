@@ -12,6 +12,7 @@ class UserProvider extends ChangeNotifier {
       if (user1 != null) {
         issignedIn = true;
         user = user1;
+        
       } else {
         issignedIn = false;
       }

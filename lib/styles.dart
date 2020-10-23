@@ -18,10 +18,19 @@ TextStyle titleTextStyle=GoogleFonts.aleo(
   fontWeight: FontWeight.bold,
   color: blueColor,
 );
+TextStyle titleTextBlackStyle=GoogleFonts.aleo(
+  fontSize: 25,
+  fontWeight: FontWeight.bold,
+  color: Colors.black,
+);
 TextStyle subtitleText=GoogleFonts.aleo(
   fontSize: 15,
   fontWeight: FontWeight.bold,
   color: Colors.black,
+);
+TextStyle subtitleTextSmall=GoogleFonts.aleo(
+  fontSize: 13,
+  color: Colors.grey,
 );
 TextStyle simpleTextDrawer=GoogleFonts.aleo(
   fontSize: 20,

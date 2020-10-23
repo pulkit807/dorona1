@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dorona/Screens/Login/login.dart';
 import 'package:dorona/colors1.dart';
+import 'package:dorona/providers/bottomBarProvider.dart';
 import 'package:dorona/providers/userProvider.dart';
 import 'package:dorona/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -36,6 +37,9 @@ class _MyAppState extends State<MyApp> {
       providers: [
         ChangeNotifierProvider.value(
           value: UserProvider(),
+        ),
+        ChangeNotifierProvider.value(
+          value: BottomBarProvider(),
         )
       ],
       child: MaterialApp(
@@ -69,13 +73,18 @@ class _OnBoardingState extends State<OnBoarding> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    getPermissions();
   }
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
     if(!userProvider.issignedIn){
+      print("listening");
       userProvider.registerUserChange();
     }
-    return userProvider.issignedIn ? Home(userProvider.user.uid) : Login();
+    return userProvider.issignedIn ? Home(userProvider.user) : Login();
+  }
+  void getPermissions()async{
+    await requestPermission();
   }
 }

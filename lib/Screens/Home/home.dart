@@ -1,21 +1,26 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dorona/Screens/Drawer/drawer.dart';
 import 'package:dorona/Screens/Profile/profilePage.dart';
+import 'package:dorona/Screens/Surverys/survey.dart';
+import 'package:dorona/Screens/Surverys/surveyNew.dart';
 import 'package:dorona/colors1.dart';
 import 'package:dorona/my_custom_icons.dart';
+import 'package:dorona/providers/bottomBarProvider.dart';
 import 'package:dorona/providers/userProvider.dart';
 import 'package:dorona/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
 
 import 'covid_updates.dart';
 
 class Home extends StatefulWidget {
-  String userId;
-  Home(this.userId);
+  User user;
+  Home(this.user);
   @override
   _HomeState createState() => _HomeState();
 }
@@ -25,17 +30,33 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     // TODO: implement initState
+     FirebaseFirestore.instance
+            .collection('status')
+            .doc(widget.user.uid)
+            .get()
+            .then((value) {
+          if (!value.exists) {
+            FirebaseFirestore.instance.collection('status').doc(widget.user.uid).set({
+              'status': 'negative',
+              'remark':'He/she is at low risk',
+              'timestamp': DateTime.now().millisecondsSinceEpoch,
+              'mobileNumber':widget.user.phoneNumber
+            }).then((value) => print("updated"));
+          }
+        });
     super.initState();
-    MethodChannel channel = MethodChannel("Location");
-    channel.invokeMethod('startLocation', {'userId': widget.userId});
+    // MethodChannel channel = MethodChannel("Location");
+    // channel.invokeMethod('startLocation', {'userId': widget.user.uid});
+   
   }
 
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
+    final bottomBarProvider = Provider.of<BottomBarProvider>(context);
     return Scaffold(
       backgroundColor: Colors.white,
-      drawer: CustomDrawer(),
+      drawer: CustomDrawer(context),
       appBar: AppBar(
         title: Text(
           "Dorona",
@@ -47,6 +68,41 @@ class _HomeState extends State<Home> {
         iconTheme: IconThemeData(
           color: blueColor,
         ),
+        bottom: bottomBarProvider.isShowBottom
+            ? PreferredSize(
+                child: FadeIn(
+                  child: Container(
+                    padding: EdgeInsets.only(left: 10, right: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Active",
+                          style: GoogleFonts.aleo(
+                              color: Colors.red, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "Recovered",
+                          style: GoogleFonts.aleo(
+                              color: Colors.green, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "Deceased",
+                          style: GoogleFonts.aleo(
+                              color: Colors.black, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "Confirmed",
+                          style: GoogleFonts.aleo(
+                              color: Colors.red, fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                preferredSize: Size(50, 20),
+              )
+            : PreferredSize(child: Container(), preferredSize: null),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -64,10 +120,14 @@ class _HomeState extends State<Home> {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
-      body: _selectedIndex==1?CovidUpdates():Column(),
+      body: _selectedIndex == 1
+          ? CovidUpdates()
+          : _selectedIndex == 2
+              ? SurveyNew()
+              : Column(),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(color: Colors.white, boxShadow: [
           BoxShadow(blurRadius: 20, color: Colors.black.withOpacity(.1))
