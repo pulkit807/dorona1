@@ -6,7 +6,6 @@ class BottomBarProvider extends ChangeNotifier {
   bool isShowBottom = false;
   void changeBottom(bool value) {
     isShowBottom = value;
-
     notifyListeners();
   }
 }

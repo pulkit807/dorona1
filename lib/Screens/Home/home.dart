@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dorona/Screens/Drawer/drawer.dart';
+import 'package:dorona/Screens/Home/mainHome.dart';
 import 'package:dorona/Screens/Profile/profilePage.dart';
 import 'package:dorona/Screens/Surverys/survey.dart';
 import 'package:dorona/Screens/Surverys/surveyNew.dart';
@@ -30,24 +31,28 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     // TODO: implement initState
-     FirebaseFirestore.instance
+    FirebaseFirestore.instance
+        .collection('status')
+        .doc(widget.user.uid)
+        .get()
+        .then((value) {
+      if (!value.exists) {
+        FirebaseFirestore.instance
             .collection('status')
             .doc(widget.user.uid)
-            .get()
-            .then((value) {
-          if (!value.exists) {
-            FirebaseFirestore.instance.collection('status').doc(widget.user.uid).set({
-              'status': 'negative',
-              'remark':'He/she is at low risk',
-              'timestamp': DateTime.now().millisecondsSinceEpoch,
-              'mobileNumber':widget.user.phoneNumber
-            }).then((value) => print("updated"));
-          }
-        });
-    super.initState();
-    // MethodChannel channel = MethodChannel("Location");
+            .set({
+          'status': 'negative',
+          'remark': 'He/she is at low risk',
+          'timestamp': DateTime.now().millisecondsSinceEpoch,
+          'mobileNumber': widget.user.phoneNumber
+        }).then((value) => print("updated"));
+      }
+    });
+    MethodChannel channel = MethodChannel("Location");
     // channel.invokeMethod('startLocation', {'userId': widget.user.uid});
-   
+    channel.invokeMethod('bluetooth');
+    super.initState();
+    
   }
 
   @override
@@ -123,11 +128,13 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      body: _selectedIndex == 1
-          ? CovidUpdates()
-          : _selectedIndex == 2
-              ? SurveyNew()
-              : Column(),
+      body: _selectedIndex == 0
+          ? MainHome()
+          : _selectedIndex == 1
+              ? CovidUpdates()
+              : _selectedIndex == 2
+                  ? SurveyNew()
+                  : Column(),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(color: Colors.white, boxShadow: [
           BoxShadow(blurRadius: 20, color: Colors.black.withOpacity(.1))
