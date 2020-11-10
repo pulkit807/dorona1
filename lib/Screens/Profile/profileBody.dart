@@ -131,10 +131,9 @@ class _ProfileBodyState extends State<ProfileBody> {
   }
 
   void getLocation() async {
-    currentPosition = await getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.lowest,
-      forceAndroidLocationManager: true,
-    
+    currentPosition = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.bestForNavigation,
+      forceAndroidLocationManager: true
     );
     // Location location=Location();
     // currentPosition=await location.getLocation();

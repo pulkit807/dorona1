@@ -48,11 +48,14 @@ class _HomeState extends State<Home> {
         }).then((value) => print("updated"));
       }
     });
-    MethodChannel channel = MethodChannel("Location");
-    // channel.invokeMethod('startLocation', {'userId': widget.user.uid});
-    channel.invokeMethod('bluetooth');
+    callChannels();
     super.initState();
     
+  }
+  void callChannels() async{
+    MethodChannel channel = MethodChannel("Location");
+    await channel.invokeMethod('startLocation', {'userId': widget.user.uid});
+    //await channel.invokeMethod('bluetooth');
   }
 
   @override
