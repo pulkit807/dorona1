@@ -11,11 +11,13 @@ import 'package:dorona/providers/bottomBarProvider.dart';
 import 'package:dorona/providers/userProvider.dart';
 import 'package:dorona/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'covid_updates.dart';
 
@@ -49,10 +51,11 @@ class _HomeState extends State<Home> {
       }
     });
     callChannels();
+    createAndroidNotificationToken();
     super.initState();
-    
   }
-  void callChannels() async{
+
+  void callChannels() async {
     MethodChannel channel = MethodChannel("Location");
     await channel.invokeMethod('startLocation', {'userId': widget.user.uid});
     //await channel.invokeMethod('bluetooth');
@@ -176,5 +179,32 @@ class _HomeState extends State<Home> {
         ),
       ),
     );
+  }
+
+  void createAndroidNotificationToken() async {
+    print("creating token");
+    FirebaseMessaging firebaseMessaging = FirebaseMessaging();
+    String messagingToken = await firebaseMessaging.getToken();
+    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+    String token=sharedPreferences.getString("androidNotificationToken");
+    if(token==null || token==""){
+      await sharedPreferences.setString("androidNotificationToken", messagingToken);
+      FirebaseFirestore.instance
+        .collection("Users")
+        .doc(widget.user.uid)
+        .set({
+          'androidNotificationToken':messagingToken
+        }, SetOptions(merge: true));
+    }
+    if(token!=null && token!="" && token!=messagingToken){
+      await sharedPreferences.setString("androidNotificationToken", messagingToken);
+      FirebaseFirestore.instance
+        .collection("Users")
+        .doc(widget.user.uid)
+        .set({
+          'androidNotificationToken':messagingToken
+        }, SetOptions(merge: true));
+    }
+    
   }
 }

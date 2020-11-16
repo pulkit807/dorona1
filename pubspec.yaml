@@ -49,6 +49,9 @@ dependencies:
   location: ^3.0.0
   flutter_svg: ^0.19.1
   shimmer: ^1.1.2
+  flutter_blue: ^0.7.3
+  firebase_messaging: ^7.0.3
+  shared_preferences: ^0.5.12+4
 
 dev_dependencies:
   flutter_test:

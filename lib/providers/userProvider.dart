@@ -24,26 +24,29 @@ class UserProvider extends ChangeNotifier {
             MethodChannel channel = MethodChannel("Location");
             String macAddress =
                 await channel.invokeMethod("getBluetoothAddress");
+            if (macAddress != null) {
+              FirebaseFirestore.instance
+                  .collection('bluetoothAddress')
+                  .doc(macAddress)
+                  .get()
+                  .then((value) {
+                if (!value.exists) {
+                  FirebaseFirestore.instance
+                      .collection("bluetoothAddress")
+                      .doc(macAddress)
+                      .set({
+                    'uid': user.uid,
+                    'bluetoothAddress': macAddress,
+                    'status': "He/she is at low risk"
+                  });
+                }
+              });
+            }
+
             FirebaseFirestore.instance.collection("Users").doc(user.uid).set({
               'uid': user.uid,
               'phoneno': user.phoneNumber,
               'bluetoothAddress': macAddress
-            });
-            FirebaseFirestore.instance
-                .collection('bluetoothAddress')
-                .doc(macAddress)
-                .get()
-                .then((value) {
-              if (!value.exists) {
-                FirebaseFirestore.instance
-                    .collection("bluetoothAddress")
-                    .doc(macAddress)
-                    .set({
-                  'uid': user.uid,
-                  'bluetoothAddress': macAddress,
-                  'status': "He/she is at low risk"
-                });
-              }
             });
           }
         });

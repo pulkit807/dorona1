@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dorona/Screens/NearbyYou/peopleNearByYou.dart';
 import 'package:dorona/colors1.dart';
 import 'package:dorona/providers/userProvider.dart';
 import 'package:dorona/styles.dart';
@@ -36,10 +37,10 @@ class _MainHomeState extends State<MainHome> {
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    return CircularProgressIndicator();
+                    return Center(child: CircularProgressIndicator());
                   }
                   if (snapshot.hasError) {
-                    return CircularProgressIndicator();
+                    return Center(child: CircularProgressIndicator());
                   }
                   return Container(
                     // color: snapshot.data['status'] == 'negative'
@@ -56,12 +57,6 @@ class _MainHomeState extends State<MainHome> {
                     ])),
                     child: ListTile(
                       leading: Container(
-                        margin: EdgeInsets.all(10),
-                        padding: EdgeInsets.only(top: 5),
-                        width: 60,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(100)),
                         child: Image.asset(
                           "assets/images/medical-mask.png",
                         ),
@@ -74,6 +69,38 @@ class _MainHomeState extends State<MainHome> {
                             color: Colors.white,
                             fontSize: 25,
                             fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: InkWell(
+                        onTap: () {
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) {
+                            return PeopleNearByYou(userProvider.user.uid);
+                          }));
+                        },
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                              color: snapshot.data['status'] == 'negative'
+                                  ? greenColor
+                                  : Colors.red,
+                              border:
+                                  Border.all(color: Colors.white70, width: 5),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Center(
+                              child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "See others nearby you!",
+                                style: buttonText,
+                              ),
+                              Icon(
+                                Icons.play_arrow_rounded,
+                                color: Colors.white,
+                              )
+                            ],
+                          )),
+                        ),
                       ),
                     ),
                   );
@@ -104,7 +131,7 @@ class _MainHomeState extends State<MainHome> {
                         baseColor: Color(0xFFF5F5F7),
                         highlightColor: Colors.white,
                         child: CircleAvatar(
-                          radius: 30,
+                          radius: 40,
                           backgroundColor: Colors.white,
                         ),
                       );
@@ -127,7 +154,7 @@ class _MainHomeState extends State<MainHome> {
                         baseColor: Color(0xFFF5F5F7),
                         highlightColor: Colors.white,
                         child: CircleAvatar(
-                          radius: 30,
+                          radius: 40,
                           backgroundColor: Colors.white,
                         ),
                       );
@@ -150,7 +177,7 @@ class _MainHomeState extends State<MainHome> {
                         baseColor: Color(0xFFF5F5F7),
                         highlightColor: Colors.white,
                         child: CircleAvatar(
-                          radius: 30,
+                          radius: 40,
                           backgroundColor: Colors.white,
                         ),
                       );
@@ -174,6 +201,17 @@ class _MainHomeState extends State<MainHome> {
                 children: [
                   SvgPicture.asset(
                     "assets/images/nurse.svg",
+                    height: 160,
+                    width: 160,
+                    placeholderBuilder: (context) {
+                      return Shimmer.fromColors(
+                          child: Container(
+                            width: 160,
+                            height: 160,
+                          ),
+                          baseColor: Color(0xFFF5F5F7),
+                          highlightColor: Colors.white);
+                    },
                   ),
                   Column(
                     children: [
@@ -194,15 +232,12 @@ class _MainHomeState extends State<MainHome> {
                     ],
                   ),
                 ],
-              ), 
+              ),
             ),
           ),
-          RaisedButton(onPressed: ()async{
-            print("inside");
-            MethodChannel channel=MethodChannel("Location");
-           String macAddress= await channel.invokeMethod("getBluetoothAddress");
-           print(macAddress);
-          })
+          // RaisedButton(onPressed: () async {
+        
+          // })
         ],
       ),
     );
