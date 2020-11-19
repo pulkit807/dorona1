@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:dorona/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:dorona/Screens/Drawer/chatbot.dart';
 class CustomDrawer extends StatefulWidget {
   BuildContext homecontext;
   CustomDrawer(this.homecontext);
@@ -129,6 +129,17 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   "Privacy Policy",
                   style: simpleTextDrawer,
                 ),
+              ),
+              ListTile(
+                title: Text(
+                  "Personal Assistant",
+                  style: simpleTextDrawer,
+                ),
+                onTap: (){
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => HomePageDialogflow(),
+                  ));
+                },
               )
             ],
           ),
