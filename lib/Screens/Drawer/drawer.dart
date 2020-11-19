@@ -1,5 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dorona/Screens/QrScanner/showQr.dart';
+import 'package:dorona/Screens/Surverys/chatBot.dart';
 import 'package:dorona/colors1.dart';
 import 'package:dorona/my_custom_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -125,6 +126,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 color: iconColor,
               ),
               ListTile(
+                onTap: (){
+                  
+                },
                 title: Text(
                   "Privacy Policy",
                   style: simpleTextDrawer,

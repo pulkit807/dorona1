@@ -66,6 +66,7 @@ class _HomeState extends State<Home> {
     final userProvider = Provider.of<UserProvider>(context);
     final bottomBarProvider = Provider.of<BottomBarProvider>(context);
     return Scaffold(
+    
       backgroundColor: Colors.white,
       drawer: CustomDrawer(context),
       appBar: AppBar(

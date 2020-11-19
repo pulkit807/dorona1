@@ -51,6 +51,7 @@ class _MyAppState extends State<MyApp> {
         )
       ],
       child: MaterialApp(
+          
           home: SplashScreen(
         seconds: 5,
         backgroundColor: Colors.white,
@@ -61,7 +62,7 @@ class _MyAppState extends State<MyApp> {
         ),
         loadingText: Text(
           "Door Raho Na!",
-          style: splashtitle,
+          style: splashtitle, 
         ),
         loaderColor: Colors.red,
         image: Image.asset('assets/images/coronavirus.png'),

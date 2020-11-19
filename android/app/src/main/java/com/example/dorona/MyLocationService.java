@@ -125,22 +125,23 @@ public class MyLocationService extends BroadcastReceiver {
                                     .set(locationData).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    NotificationCompat.Builder builder=new NotificationCompat.Builder(context,"123456")
-                                            .setContentTitle("Dorona Tracker")
-                                            .setSmallIcon(R.mipmap.ic_launcher)
-                                            .setOngoing(true)
-                                            .setColor(Color.rgb(128,131,224))
-                                            .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                                            .setStyle(new NotificationCompat.BigTextStyle()
-                                                    .bigText("Dorona tracks you continuously, to keep you safe."))
-                                            .setPriority(NotificationCompat.PRIORITY_HIGH);
-                                    if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
-                                        NotificationChannel channel=new NotificationChannel("123456","123456", NotificationManager.IMPORTANCE_HIGH);
-                                        NotificationManager notificationManager= (NotificationManager) getSystemService(context,NotificationManager.class);
-                                        notificationManager.createNotificationChannel(channel);
-                                    }
-                                    NotificationManagerCompat notificationManagerCompat=NotificationManagerCompat.from(context);
-                                    notificationManagerCompat.notify(123,builder.build());
+                                    System.out.println("Successfully location updated");
+//                                    NotificationCompat.Builder builder=new NotificationCompat.Builder(context,"123456")
+//                                            .setContentTitle("Location Updated")
+//                                            .setSmallIcon(R.mipmap.ic_launcher)
+//                                            .setColor(Color.rgb(128,131,224))
+//                                            .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+//                                            .setStyle(new NotificationCompat.BigTextStyle()
+//                                                    .bigText("Latitude:"+location.getLatitude()+" Longitude:"+location.getLongitude()+
+//                                                            '\n'+addresses.get(0).getPostalCode()))
+//                                            .setPriority(NotificationCompat.PRIORITY_HIGH);
+//                                    if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+//                                        NotificationChannel channel=new NotificationChannel("123456","123456", NotificationManager.IMPORTANCE_HIGH);
+//                                        NotificationManager notificationManager= (NotificationManager) getSystemService(context,NotificationManager.class);
+//                                        notificationManager.createNotificationChannel(channel);
+//                                    }
+//                                    NotificationManagerCompat notificationManagerCompat=NotificationManagerCompat.from(context);
+//                                    notificationManagerCompat.notify(123,builder.build());
                                 }
                             });
                         }

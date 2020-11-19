@@ -57,11 +57,14 @@ exports.onLocationCreate = functions
                 notification: {
                     body: `${count} persons near you are covid positive(<10m)`,
                     title: "Dorona Alert",
+                    
                 },
                 token: androidNotificationToken,
                 android: {
                     notification: {
-                        sound: 'default',
+                        
+                        tag:userId+"fromfcm",
+                        notification_priority:"PRIORITY_DEFAULT"
                     },
                     priority: 'high',
                     ttl: 0
@@ -127,7 +130,9 @@ exports.onLocationUpdate = functions
                 token: androidNotificationToken,
                 android: {
                     notification: {
-                        sound: 'default',
+                        
+                        tag:userId+"fromfcm",
+                        notification_priority:"PRIORITY_DEFAULT"
                     },
                     priority: 'high',
                     ttl: 0

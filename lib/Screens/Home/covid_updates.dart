@@ -63,9 +63,7 @@ class _CovidUpdatesState extends State<CovidUpdates> {
                     alignment: Alignment.topCenter,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: CircularProgressIndicator(
-                        
-                      ),
+                      child: CircularProgressIndicator(),
                     ));
               }
               if (snapshot.hasError) {
@@ -94,7 +92,7 @@ class _CovidUpdatesState extends State<CovidUpdates> {
                         color: Color(0xFFF5F5F7),
                         padding: EdgeInsets.only(left: 10, bottom: 10),
                         child: Text(
-                          "Updated on ${snapshot.data['dailyData'][0]['date']}",
+                          "Updated on ${snapshot.data['dailyData'][snapshot.data['dailyData'].length - 1]['date']}",
                           style: TextStyle(
                             color: Colors.grey,
                           ),
@@ -283,26 +281,31 @@ class _CovidUpdatesState extends State<CovidUpdates> {
                         children: [
                           Text(
                             'Active',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, color: Colors.red),
+                            style: GoogleFonts.aleo(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red,
+                            ),
                           ),
                           Text(
                             'Recovered',
-                            style: TextStyle(
+                            style: GoogleFonts.aleo(
                               fontWeight: FontWeight.bold,
                               color: Colors.green,
                             ),
                           ),
                           Text(
                             'Deceased',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
+                            style: GoogleFonts.aleo(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
                           ),
                           Text(
                             'Confirmed',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, color: Colors.red),
+                            style: GoogleFonts.aleo(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red,
+                            ),
                           )
                         ],
                       ),
@@ -476,7 +479,9 @@ class _StateListState extends State<StateList> {
               ),
               Text(
                 data['state'],
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: GoogleFonts.aleo(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               SizedBox(
                 height: 2.0,
@@ -486,21 +491,25 @@ class _StateListState extends State<StateList> {
                 children: [
                   Text(
                     data['active'],
-                    style: TextStyle(color: Colors.red),
+                    style: GoogleFonts.aleo(
+                      color: Colors.red,
+                    ),
                   ),
                   Text(
                     data['recovered'],
-                    style: TextStyle(
+                    style: GoogleFonts.aleo(
                       color: Colors.green,
                     ),
                   ),
                   Text(
                     data['deaths'],
-                    style: TextStyle(color: Colors.black),
+                    style: GoogleFonts.aleo(),
                   ),
                   Text(
                     data['confirmed'],
-                    style: TextStyle(color: Colors.red),
+                    style: GoogleFonts.aleo(
+                      color: Colors.red,
+                    ),
                   )
                 ],
               ),

@@ -160,7 +160,7 @@ class _LoginState extends State<Login> {
                               style: buttonText,
                             ),
                           ),
-                    SizedBox(height: 50),
+                    SizedBox(height: 40),
                   ],
                 ),
               )

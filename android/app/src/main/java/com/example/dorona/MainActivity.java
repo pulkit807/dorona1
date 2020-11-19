@@ -9,9 +9,11 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -20,7 +22,10 @@ import android.location.Geocoder;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,9 +45,14 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -56,7 +66,7 @@ import io.flutter.plugin.common.MethodChannel;
 import static android.content.Context.ALARM_SERVICE;
 import static androidx.core.content.ContextCompat.getSystemService;
 
-public class MainActivity extends FlutterActivity {
+public class MainActivity extends FlutterActivity{
     static MainActivity instance;
     public String userId;
     public static MainActivity getInstance() {
@@ -70,6 +80,7 @@ public class MainActivity extends FlutterActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         instance = this;
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -81,9 +92,15 @@ public class MainActivity extends FlutterActivity {
                     .setMethodCallHandler((call, result) -> {
                                 if (call.method.equals("startLocation")) {
                                     userId = call.argument("userId").toString();
-                                    NewThread thread = new NewThread(userId, this);
-                                    thread.start();
-                                    updateLocation(userId);
+//                                    NewThread thread = new NewThread(userId, this);
+//                                    thread.start();
+//                                    updateLocation(userId);
+                                    Intent intent=new Intent(this,MyForegroundLocationService.class);
+                                    if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+                                        startForegroundService(intent);
+                                    }else{
+                                        startService(intent);
+                                    }
                                 }
                                 if (call.method.equals("bluetooth")) {
                                     // final BluetoothManager manager = (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
@@ -199,5 +216,6 @@ public class MainActivity extends FlutterActivity {
                 .setFastestInterval(3000)
                 .setSmallestDisplacement(10f);
     }
+
 }
 
