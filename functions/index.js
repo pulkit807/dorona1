@@ -147,3 +147,7 @@ exports.onLocationUpdate = functions
         }
 
     });
+exports.date = functions.https.onRequest((req, res) => {
+        // ...
+        console.log("called date function");
+    });

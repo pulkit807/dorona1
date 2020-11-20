@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:animate_do/animate_do.dart';
 import 'package:dorona/colors1.dart';
 import 'package:dorona/providers/bottomBarProvider.dart';
+import 'package:dorona/providers/floatingActionButtonProvider.dart';
 import 'package:dorona/styles.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,6 +22,7 @@ class _CovidUpdatesState extends State<CovidUpdates> {
   Color color = Colors.red;
   int graphType = 0;
   ScrollController scrollController;
+  bool listenerAdded=false;
   @override
   void initState() {
     data = fetchCoronaData();
@@ -32,27 +34,30 @@ class _CovidUpdatesState extends State<CovidUpdates> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     final bottomBarProvider = Provider.of<BottomBarProvider>(context);
-    // scrollController = ScrollController()
-    //   ..addListener(() {
-    //     if (scrollController.position.pixels > 512) {
-    //       if (!bottomBarProvider.isShowBottom) {
-    //         print("find widget");
-    //         print(scrollController.offset);
-    //         bottomBarProvider.changeBottom(true);
-    //       }
-    //     }
-    //     if (scrollController.position.pixels < 512) {
-    //       if (bottomBarProvider.isShowBottom) {
-    //         print("find widget");
-    //         print(scrollController.offset);
-    //         bottomBarProvider.changeBottom(false);
-    //       }
-    //     }
-    //   });
+    final floatingActionButtonProvider =
+        Provider.of<FloatingActionButtonProvider>(context);
+    if (!listenerAdded) {
+      listenerAdded=true;
+      scrollController = ScrollController()
+        ..addListener(() {
+          if (scrollController.position.pixels ==
+              scrollController.position.maxScrollExtent) {
+            if (!floatingActionButtonProvider.isShowFloatingButton) {
+              floatingActionButtonProvider.changeButton(true);
+            }
+          }
+          if(scrollController.position.pixels <scrollController.position.maxScrollExtent){
+            if(floatingActionButtonProvider.isShowFloatingButton){
+              floatingActionButtonProvider.changeButton(false);
+            }
+          }
+        });
+    }
+
     return SingleChildScrollView(
       controller: scrollController,
       child: Container(
-        height: 2830,
+        height: 2910,
         width: width,
         color: Colors.white,
         child: FutureBuilder(

@@ -8,6 +8,7 @@ import 'package:dorona/Screens/Surverys/surveyNew.dart';
 import 'package:dorona/colors1.dart';
 import 'package:dorona/my_custom_icons.dart';
 import 'package:dorona/providers/bottomBarProvider.dart';
+import 'package:dorona/providers/floatingActionButtonProvider.dart';
 import 'package:dorona/providers/userProvider.dart';
 import 'package:dorona/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,6 +31,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _selectedIndex = 1;
+  bool showFloating = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -65,8 +67,9 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
     final bottomBarProvider = Provider.of<BottomBarProvider>(context);
+    final floatingActionButtonProvider =
+        Provider.of<FloatingActionButtonProvider>(context);
     return Scaffold(
-    
       backgroundColor: Colors.white,
       drawer: CustomDrawer(context),
       appBar: AppBar(
@@ -142,6 +145,22 @@ class _HomeState extends State<Home> {
               : _selectedIndex == 2
                   ? SurveyNew()
                   : Column(),
+      floatingActionButton: floatingActionButtonProvider.isShowFloatingButton
+          ? SlideInRight(
+              child: FloatingActionButton.extended(
+                  onPressed: () {},
+                  label: Row(
+                    children: [
+                      Image.asset(
+                        "assets/images/doctor.png",
+                        width: 20,
+                        height: 20,
+                      ),
+                      Text("Chat with us")
+                    ],
+                  )),
+            )
+          : Container(),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(color: Colors.white, boxShadow: [
           BoxShadow(blurRadius: 20, color: Colors.black.withOpacity(.1))
@@ -186,26 +205,21 @@ class _HomeState extends State<Home> {
     print("creating token");
     FirebaseMessaging firebaseMessaging = FirebaseMessaging();
     String messagingToken = await firebaseMessaging.getToken();
-    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-    String token=sharedPreferences.getString("androidNotificationToken");
-    if(token==null || token==""){
-      await sharedPreferences.setString("androidNotificationToken", messagingToken);
-      FirebaseFirestore.instance
-        .collection("Users")
-        .doc(widget.user.uid)
-        .set({
-          'androidNotificationToken':messagingToken
-        }, SetOptions(merge: true));
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String token = sharedPreferences.getString("androidNotificationToken");
+    if (token == null || token == "") {
+      await sharedPreferences.setString(
+          "androidNotificationToken", messagingToken);
+      FirebaseFirestore.instance.collection("Users").doc(widget.user.uid).set(
+          {'androidNotificationToken': messagingToken},
+          SetOptions(merge: true));
     }
-    if(token!=null && token!="" && token!=messagingToken){
-      await sharedPreferences.setString("androidNotificationToken", messagingToken);
-      FirebaseFirestore.instance
-        .collection("Users")
-        .doc(widget.user.uid)
-        .set({
-          'androidNotificationToken':messagingToken
-        }, SetOptions(merge: true));
+    if (token != null && token != "" && token != messagingToken) {
+      await sharedPreferences.setString(
+          "androidNotificationToken", messagingToken);
+      FirebaseFirestore.instance.collection("Users").doc(widget.user.uid).set(
+          {'androidNotificationToken': messagingToken},
+          SetOptions(merge: true));
     }
-    
   }
 }

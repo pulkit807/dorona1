@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dorona/Screens/Login/login.dart';
 import 'package:dorona/colors1.dart';
 import 'package:dorona/providers/bottomBarProvider.dart';
+import 'package:dorona/providers/floatingActionButtonProvider.dart';
 import 'package:dorona/providers/userProvider.dart';
 import 'package:dorona/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -38,7 +39,6 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -48,10 +48,12 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider.value(
           value: BottomBarProvider(),
+        ),
+        ChangeNotifierProvider.value(
+          value: FloatingActionButtonProvider(),
         )
       ],
       child: MaterialApp(
-          
           home: SplashScreen(
         seconds: 5,
         backgroundColor: Colors.white,
@@ -62,7 +64,7 @@ class _MyAppState extends State<MyApp> {
         ),
         loadingText: Text(
           "Door Raho Na!",
-          style: splashtitle, 
+          style: splashtitle,
         ),
         loaderColor: Colors.red,
         image: Image.asset('assets/images/coronavirus.png'),
@@ -79,7 +81,7 @@ class OnBoarding extends StatefulWidget {
 
 class _OnBoardingState extends State<OnBoarding> {
   bool isDialogOpen = false;
-  bool isRegistered=false;
+  bool isRegistered = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -105,7 +107,7 @@ class _OnBoardingState extends State<OnBoarding> {
     final userProvider = Provider.of<UserProvider>(context);
     if (!isRegistered) {
       print("listening");
-      isRegistered=true;
+      isRegistered = true;
       userProvider.registerUserChange();
     }
     return userProvider.issignedIn ? Home(userProvider.user) : Login();
